@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <audio id="ariana" controls>
+        <source src="7 rings.m4a" type="audio/mpeg">
+    </audio><br>
+    
+    <div id="speed"></div>
+
+    <button onclick="getPlaySpeed()" type="button">Check playback speed</button>
+    <button onclick="increasePlaySpeed()" type="button">Increase playback speed</button>
+    <button onclick="decreasePlaySpeed()" type="button">Decrease playback speed</button>
+
+    <script>
+        var x = document.getElementById("ariana");
+
+        function updateSpeed() {
+            document.getElementById("speed").innerText = x.playbackRate;
+        }
+        function getPlaySpeed() {
+            alert(x.playbackRate);
+        }
+
+        function increasePlaySpeed() {
+            x.playbackRate += 0.20;
+            updateSpeed();
+        }
+
+        function decreasePlaySpeed() {
+            if (x.playbackrate === 0) {
+                document.getElementById("speed").innerText = "Can't go below 0 speed!";
+            }
+            x.playbackRate -= 0.05;
+            updateSpeed();
+        }
+    </script>
+
+</body>
+
+</html>
