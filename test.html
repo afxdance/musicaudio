@@ -2,37 +2,45 @@
 <html>
 
 <body>
+    <audio id="song" controls></audio>
 
-    <audio id="ariana" controls>
-        <source src="7 rings.m4a" type="audio/mpeg">
-    </audio><br>
-    
-    <div id="speed"></div>
+    <div>Play speed is currently: <div id="speed"></div></div>
 
-    <button onclick="getPlaySpeed()" type="button">Check playback speed</button>
+    <input type="file" id="input" />
+    <br>
+    <br>
     <button onclick="increasePlaySpeed()" type="button">Increase playback speed</button>
+    <br>
     <button onclick="decreasePlaySpeed()" type="button">Decrease playback speed</button>
 
+
     <script>
-        var x = document.getElementById("ariana");
+        input.onchange = function (e) {
+                var music = document.getElementById('song');
+                music.src = URL.createObjectURL(this.files[0]);
+                updateSpeed();
+                music.onend = function (e) {
+                    URL.revokeObjectURL(this.src);
+                }
+            }
+
+        var music = document.getElementById('song');
+        updateSpeed();
 
         function updateSpeed() {
-            document.getElementById("speed").innerText = x.playbackRate;
-        }
-        function getPlaySpeed() {
-            alert(x.playbackRate);
+            document.getElementById("speed").innerText = music.playbackRate.toFixed(2);
         }
 
         function increasePlaySpeed() {
-            x.playbackRate += 0.20;
+            music.playbackRate += 0.05;
             updateSpeed();
         }
 
         function decreasePlaySpeed() {
-            if (x.playbackrate === 0) {
-                document.getElementById("speed").innerText = "Can't go below 0 speed!";
+            if (music.playbackrate === 0) {
+                document.getElementById("speed").innerTect = "Can't go below 0 speed!";
             }
-            x.playbackRate -= 0.05;
+            music.playbackRate -= 0.05;
             updateSpeed();
         }
     </script>
