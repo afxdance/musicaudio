@@ -9,10 +9,13 @@
     <input type="file" id="input" />
     <br>
     <br>
-    <button onclick="increasePlaySpeed()" type="button">Increase playback speed</button>
+    <button onclick="increasePlaySpeed()" type="button">Increase playback speed 5%</button>
     <br>
-    <button onclick="decreasePlaySpeed()" type="button">Decrease playback speed</button>
-
+    <button onclick="decreasePlaySpeed()" type="button">Decrease playback speed -5%</button>
+    <br>
+    <button onclick="skipForward()" type="button">Skip forward 5s</button>
+    <br>
+    <button onclick="goBackward()" type="button">Go backward -5s</button>
 
     <script>
         input.onchange = function (e) {
@@ -24,7 +27,7 @@
                 }
             }
 
-        var music = document.getElementById('song');
+        var music = document.getElementById("song");
         updateSpeed();
 
         function updateSpeed() {
@@ -37,11 +40,19 @@
         }
 
         function decreasePlaySpeed() {
-            if (music.playbackrate === 0) {
-                document.getElementById("speed").innerTect = "Can't go below 0 speed!";
+            if (music.playbackrate - 0.05 == 0.10) {
+                document.getElementById("speed").innerTect = "Can't go below 0.10 speed!";
             }
             music.playbackRate -= 0.05;
             updateSpeed();
+        }
+
+        function skipForward() {
+            music.currentTime += 5; 
+        }
+
+        function goBackward() {
+            music.currentTime -= 5; 
         }
     </script>
 
