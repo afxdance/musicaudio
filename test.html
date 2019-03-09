@@ -3,7 +3,10 @@
 
 <body>
     <audio id="song" controls></audio>
-
+    <br>
+    <br>
+    <button type="button" onclick="playPause()" id="playpause">Pause music</button>
+    <br>
     <div>Play speed is currently: <span id="speed"></span></div>
     <br>
     <div>Loop start: <span id="startpos"></span></div>
@@ -108,7 +111,18 @@
                 elem.innerHTML = "Set loop start";
                 setLoop(2);
             }
+        }
 
+        function playPause() {
+            var elem = document.getElementById("playpause");
+            if (isNaN(music.duration)) {} //music not uploaded yet
+            else if (elem.innerHTML == "Play music") {
+                music.play();
+                elem.innerHTML = "Pause music";
+            } else if (elem.innerHTML == "Pause music") {
+                music.pause();
+                elem.innerHTML = "Play music";
+            }
         }
 
     </script>
