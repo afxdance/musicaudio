@@ -2,7 +2,7 @@
 <html>
 
 <body>
-    <audio id="song" controls></audio>
+    <audio id="song" preload="metadata"></audio>
     <br>
     <br>
     <button type="button" onclick="playPause()" id="playpause">Play music</button>
@@ -33,8 +33,7 @@
                 var music = document.getElementById('song');
                 music.src = URL.createObjectURL(this.files[0]);
                 music.loop = 1;
-                //document.getElementById("startpos").innerHTML = 0;
-                //document.getElementById("endpos").innerHTML = music.duration.toFixed(1);
+                setLoop(2);
                 updateSpeed();
                 music.onend = function () {
                     URL.revokeObjectURL(this.src);
@@ -44,6 +43,10 @@
         var music = document.getElementById("song");
         var start = 0;
         var end = music.duration;
+        
+        music.onloadedmetadata = function () {
+            setLoop(2);
+        };
 
         updateSpeed();
 
@@ -72,7 +75,7 @@
         }
 
         function skipForward() {
-            music.currentTime += 5; 
+            music.currentTime += 5;
         }
 
         function goBackward() {
