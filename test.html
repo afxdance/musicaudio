@@ -5,7 +5,8 @@
     <audio id="song" controls></audio>
 
     <div>Play speed is currently: <span id="speed"></span></div>
-    <div>Playback position: <span id="demo"></span></div>
+    <div>Loop start: <span id="startpos"></span></div>
+    <div>Loop end: <span id="endpos"></span></div>
 
     <input type="file" id="input" />
     <br>
@@ -18,28 +19,36 @@
     <button onclick="skipForward()" type="button">Skip forward 5s</button>
     <br>
     <button onclick="goBackward()" type="button">Go backward -5s</button>
-
+    <br>
+    <button type="button" onclick="changeLoopButtonText()" id="changeButton">Set loop start</button>
+    
     <script>
-        input.onchange = function (e) {
+        input.onchange = function () {
+                //when new song uploaded, reset
                 var music = document.getElementById('song');
                 music.src = URL.createObjectURL(this.files[0]);
+                music.loop = 1;
                 updateSpeed();
-                music.onend = function (e) {
+                music.onend = function () {
                     URL.revokeObjectURL(this.src);
                 }
             }
 
         var music = document.getElementById("song");
+        var start = 0;
+        var end = music.duration;
+
         updateSpeed();
 
-        
-            music.ontimeupdate = function () { checkTime() };
+        music.ontimeupdate = function () { checkTime() };
             function checkTime() {
-                // Display the current position of the audio in a p element with id="demo"
-                document.getElementById("demo").innerHTML = music.currentTime;
+                // check whether to update or not
+                if (music.currentTime > end) {
+                    music.currentTime = start;
+                } else if (music.currentTime < start) {
+                    music.currentTime = start;
+                }
             }
-
-
 
         function updateSpeed() {
             document.getElementById("speed").innerText = music.playbackRate.toFixed(2);
@@ -64,6 +73,40 @@
             if (music.paused) {
                 music.play();
             }
+        }
+
+        function setLoop(stage) {
+            if (isNaN(music.duration)) { //music not uplodaded yet
+                document.getElementById("startpos").innerHTML = "Music not uplodaded yet";
+                document.getElementById("endpos").innerHTML = "Music not uplodaded yet";
+            } else if (stage == 0) { //setting start marker
+                start = music.currentTime;
+                document.getElementById("startpos").innerHTML = music.currentTime.toFixed(1);
+            } else if (stage == 1) { //set end marker
+                end = music.currentTime;
+                document.getElementById("endpos").innerHTML = music.currentTime.toFixed(1);
+            } else { //reset markers
+                start = 0;
+                end = music.duration;
+                document.getElementById("startpos").innerHTML = start;
+                document.getElementById("endpos").innerHTML = end.toFixed(1);
+            }
+        }
+    
+        function changeLoopButtonText() {
+            var elem = document.getElementById("changeButton");
+
+            if (elem.innerHTML=="Set loop start") {
+                elem.innerHTML = "Set loop end";
+                setLoop(0);
+            } else if (elem.innerHTML=="Set loop end") {
+                elem.innerHTML = "Reset loop markers";
+                setLoop(1);
+            } else if (elem.innerHTML=="Reset loop markers") {
+                elem.innerHTML = "Set loop start";
+                setLoop(2);
+            }
+
         }
 
     </script>
