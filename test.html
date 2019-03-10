@@ -3,14 +3,13 @@
 
 <body>
     <audio id="song" preload="metadata"></audio>
-    <br>
-    <br>
+    <div>Playback position: <span id="position"></span> seconds</div>
     <button type="button" onclick="playPause()" id="playpause">Play music</button>
     <br>
-    <div>Play speed is currently: <span id="speed"></span></div>
+    <div>Play speed is currently: <span id="speed"></span>x speed</div>
     <br>
-    <div>Loop start: <span id="startpos"></span></div>
-    <div>Loop end: <span id="endpos"></span></div>
+    <div>Loop start: <span id="startpos"></span>s</div>
+    <div>Loop end: <span id="endpos"></span>s</div>
     <br>
     <input type="file" id="input" />
     <br>
@@ -52,6 +51,7 @@
 
         music.ontimeupdate = function () { checkTime() };
             function checkTime() {
+                document.getElementById("position").innerHTML = music.currentTime.toFixed(1);
                 // check whether to update or not
                 if (music.currentTime > end) {
                     music.currentTime = start;
@@ -80,9 +80,6 @@
 
         function goBackward() {
             music.currentTime -= 5;
-            if (music.paused) {
-                music.play();
-            }
         }
 
         function setLoop(stage) {
